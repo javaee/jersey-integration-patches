@@ -1,0 +1,145 @@
+diff --git a/main/appserver/packager/jersey/pom.xml b/main/appserver/packager/jersey/pom.xml
+index 64d87f8e4c..afa10fc2ef 100644
+--- a/main/appserver/packager/jersey/pom.xml
++++ b/main/appserver/packager/jersey/pom.xml
+@@ -92,6 +92,10 @@
+             <optional>true</optional>
+         </dependency>
+         <dependency>
++            <groupId>org.glassfish.jersey.inject</groupId>
++            <artifactId>jersey-hk2</artifactId>
++        </dependency>
++        <dependency>
+             <groupId>org.glassfish.jersey.media</groupId>
+             <artifactId>jersey-media-moxy</artifactId>
+         </dependency>
+@@ -124,6 +128,10 @@
+             <artifactId>jersey-media-json-processing</artifactId>
+         </dependency>
+         <dependency>
++            <groupId>org.glassfish.jersey.media</groupId>
++            <artifactId>jersey-media-json-binding</artifactId>
++        </dependency>
++        <dependency>
+             <groupId>org.glassfish.jersey.ext</groupId>
+             <artifactId>jersey-mvc</artifactId>
+         </dependency>
+diff --git a/main/appserver/packager/jersey/src/main/resources/pkg_proto.py b/main/appserver/packager/jersey/src/main/resources/pkg_proto.py
+index 5be1d4e683..aa767e5822 100644
+--- a/main/appserver/packager/jersey/src/main/resources/pkg_proto.py
++++ b/main/appserver/packager/jersey/src/main/resources/pkg_proto.py
+@@ -46,7 +46,7 @@ conf = imp.load_source("pkg_conf", "../pkg_conf.py")
+ 
+ pkg = {
+     "name"          : "jersey",
+-    "version"       : "2.10.4,0-0",
++    "version"       : "2.26.0,0-1",
+     "attributes"    : { "pkg.summary" : "Jersey 2 Core, RESTful Web services for GlassFish",
+                         "pkg.description" : 
+ "Jersey core runtime libraries including some 3rd party dependencies. \
+diff --git a/main/nucleus/admin/rest/rest-service/pom.xml b/main/nucleus/admin/rest/rest-service/pom.xml
+index 44c696e707..57259cc728 100644
+--- a/main/nucleus/admin/rest/rest-service/pom.xml
++++ b/main/nucleus/admin/rest/rest-service/pom.xml
+@@ -100,8 +100,14 @@
+             <scope>provided</scope>
+         </dependency>
+         <dependency>
++            <groupId>org.glassfish.jersey.inject</groupId>
++            <artifactId>jersey-hk2</artifactId>
++            <scope>provided</scope>
++        </dependency>
++        <dependency>
+             <groupId>org.glassfish.jersey.media</groupId>
+             <artifactId>jersey-media-sse</artifactId>
++            <scope>provided</scope>
+         </dependency>
+         <dependency>
+             <groupId>org.glassfish.main.flashlight</groupId>
+diff --git a/main/nucleus/admin/rest/rest-service/src/main/java/org/glassfish/admin/rest/adapter/JerseyContainerCommandService.java b/main/nucleus/admin/rest/rest-service/src/main/java/org/glassfish/admin/rest/adapter/JerseyContainerCommandService.java
+index cc31ae4ca1..c46fa0faa4 100644
+--- a/main/nucleus/admin/rest/rest-service/src/main/java/org/glassfish/admin/rest/adapter/JerseyContainerCommandService.java
++++ b/main/nucleus/admin/rest/rest-service/src/main/java/org/glassfish/admin/rest/adapter/JerseyContainerCommandService.java
+@@ -69,8 +69,8 @@ import org.glassfish.hk2.utilities.Binder;
+ import org.glassfish.hk2.utilities.binding.AbstractBinder;
+ import org.glassfish.internal.api.InternalSystemAdministrator;
+ import org.glassfish.internal.api.ServerContext;
++import org.glassfish.jersey.inject.hk2.Hk2ReferencingFactory;
+ import org.glassfish.jersey.internal.ServiceFinder;
+-import org.glassfish.jersey.internal.inject.ReferencingFactory;
+ import org.glassfish.jersey.internal.util.collection.Ref;
+ import org.glassfish.jersey.process.internal.RequestScoped;
+ import org.glassfish.jersey.server.ContainerFactory;
+@@ -184,7 +184,7 @@ public class JerseyContainerCommandService implements PostConstruct {
+             protected void configure() {
+                 bindFactory(RestAdapter.SubjectReferenceFactory.class).to(new TypeLiteral<Ref<Subject>>() {
+                 }).in(PerLookup.class);
+-                bindFactory(ReferencingFactory.<Subject>referenceFactory()).to(new TypeLiteral<Ref<Subject>>() {
++                bindFactory(Hk2ReferencingFactory.<Subject>referenceFactory()).to(new TypeLiteral<Ref<Subject>>() {
+                 }).in(RequestScoped.class);
+             }
+         });
+diff --git a/main/nucleus/admin/rest/rest-service/src/main/java/org/glassfish/admin/rest/adapter/RestAdapter.java b/main/nucleus/admin/rest/rest-service/src/main/java/org/glassfish/admin/rest/adapter/RestAdapter.java
+index 1553e8e08d..1f43e2d58c 100644
+--- a/main/nucleus/admin/rest/rest-service/src/main/java/org/glassfish/admin/rest/adapter/RestAdapter.java
++++ b/main/nucleus/admin/rest/rest-service/src/main/java/org/glassfish/admin/rest/adapter/RestAdapter.java
+@@ -82,7 +82,7 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
+ import org.glassfish.internal.api.AdminAccessController;
+ import org.glassfish.internal.api.RemoteAdminAccessException;
+ import org.glassfish.internal.api.ServerContext;
+-import org.glassfish.jersey.internal.inject.ReferencingFactory;
++import org.glassfish.jersey.inject.hk2.Hk2ReferencingFactory;
+ import org.glassfish.jersey.internal.util.collection.Ref;
+ import org.glassfish.jersey.internal.util.collection.Refs;
+ import org.glassfish.jersey.process.internal.RequestScoped;
+@@ -279,7 +279,7 @@ public abstract class RestAdapter extends HttpHandler implements ProxiedRestAdap
+             protected void configure() {
+                 bindFactory(SubjectReferenceFactory.class).to(new TypeLiteral<Ref<Subject>>() {
+                 }).in(PerLookup.class);
+-                bindFactory(ReferencingFactory.<Subject>referenceFactory()).to(new TypeLiteral<Ref<Subject>>() {
++                bindFactory(Hk2ReferencingFactory.<Subject>referenceFactory()).to(new TypeLiteral<Ref<Subject>>() {
+                 }).in(RequestScoped.class);
+             }
+         });
+diff --git a/main/nucleus/packager/nucleus-jersey/pom.xml b/main/nucleus/packager/nucleus-jersey/pom.xml
+index 37a300f25d..7ea0f31019 100644
+--- a/main/nucleus/packager/nucleus-jersey/pom.xml
++++ b/main/nucleus/packager/nucleus-jersey/pom.xml
+@@ -63,10 +63,6 @@
+             <artifactId>jersey-client</artifactId>
+         </dependency>
+         <dependency>
+-            <groupId>org.glassfish.jersey.bundles.repackaged</groupId>
+-            <artifactId>jersey-guava</artifactId>
+-        </dependency>
+-        <dependency>
+             <groupId>org.glassfish.jersey.containers</groupId>
+             <artifactId>jersey-container-grizzly2-http</artifactId>
+         </dependency>
+diff --git a/main/nucleus/pom.xml b/main/nucleus/pom.xml
+index fce64b9f74..6ceb509904 100644
+--- a/main/nucleus/pom.xml
++++ b/main/nucleus/pom.xml
+@@ -148,7 +148,7 @@
+         <grizzly.version>2.4.0-beta2</grizzly.version>
+         <grizzly.npn.version>1.7</grizzly.npn.version>
+         <saaj-api.version>1.3.4</saaj-api.version>
+-        <hk2.version>2.5.0-b33</hk2.version>
++        <hk2.version>2.5.0-b36</hk2.version>
+         <hk2.plugin.version>2.5.0-b33</hk2.plugin.version>
+         <jboss.logging.version>3.3.0.Final</jboss.logging.version>
+         <javax.validation.version>1.1.0.Final</javax.validation.version>
+@@ -162,11 +162,11 @@
+         <gmbal.version>4.0.0-b001</gmbal.version>
+         <woodstox.version>4.1.2</woodstox.version>
+         <antlr.version>2.7.6</antlr.version>
+-        <jersey.version>2.26-b02</jersey.version>
++        <jersey.version>2.26-SNAPSHOT</jersey.version>
+         <jackson.version>2.8.4</jackson.version>
+         <jettison.version>1.3.3</jettison.version>
+         <jax-rs-api.spec.version>2.1</jax-rs-api.spec.version>
+-        <jax-rs-api.impl.version>2.1-m03</jax-rs-api.impl.version>
++        <jax-rs-api.impl.version>2.1-m07</jax-rs-api.impl.version>
+         <mimepull.version>1.9.4</mimepull.version>
+         <jbi.version>1.0</jbi.version>
+         <glassfish-management-api.version>3.2.1-b002</glassfish-management-api.version>
