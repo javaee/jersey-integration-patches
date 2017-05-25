@@ -1,5 +1,5 @@
 diff --git a/main/appserver/packager/jersey/pom.xml b/main/appserver/packager/jersey/pom.xml
-index 64d87f8e4c..afa10fc2ef 100644
+index e1d13a3943..273ee31ba4 100644
 --- a/main/appserver/packager/jersey/pom.xml
 +++ b/main/appserver/packager/jersey/pom.xml
 @@ -92,6 +92,10 @@
@@ -13,19 +13,8 @@ index 64d87f8e4c..afa10fc2ef 100644
              <groupId>org.glassfish.jersey.media</groupId>
              <artifactId>jersey-media-moxy</artifactId>
          </dependency>
-@@ -124,6 +128,10 @@
-             <artifactId>jersey-media-json-processing</artifactId>
-         </dependency>
-         <dependency>
-+            <groupId>org.glassfish.jersey.media</groupId>
-+            <artifactId>jersey-media-json-binding</artifactId>
-+        </dependency>
-+        <dependency>
-             <groupId>org.glassfish.jersey.ext</groupId>
-             <artifactId>jersey-mvc</artifactId>
-         </dependency>
 diff --git a/main/appserver/packager/jersey/src/main/resources/pkg_proto.py b/main/appserver/packager/jersey/src/main/resources/pkg_proto.py
-index 5be1d4e683..aa767e5822 100644
+index 3d3d051a17..e1139e7bf6 100644
 --- a/main/appserver/packager/jersey/src/main/resources/pkg_proto.py
 +++ b/main/appserver/packager/jersey/src/main/resources/pkg_proto.py
 @@ -46,7 +46,7 @@ conf = imp.load_source("pkg_conf", "../pkg_conf.py")
@@ -38,7 +27,7 @@ index 5be1d4e683..aa767e5822 100644
                          "pkg.description" : 
  "Jersey core runtime libraries including some 3rd party dependencies. \
 diff --git a/main/nucleus/admin/rest/rest-service/pom.xml b/main/nucleus/admin/rest/rest-service/pom.xml
-index 44c696e707..57259cc728 100644
+index a1077d4814..a24174310b 100644
 --- a/main/nucleus/admin/rest/rest-service/pom.xml
 +++ b/main/nucleus/admin/rest/rest-service/pom.xml
 @@ -100,8 +100,14 @@
@@ -57,10 +46,10 @@ index 44c696e707..57259cc728 100644
          <dependency>
              <groupId>org.glassfish.main.flashlight</groupId>
 diff --git a/main/nucleus/admin/rest/rest-service/src/main/java/org/glassfish/admin/rest/adapter/JerseyContainerCommandService.java b/main/nucleus/admin/rest/rest-service/src/main/java/org/glassfish/admin/rest/adapter/JerseyContainerCommandService.java
-index cc31ae4ca1..c46fa0faa4 100644
+index 4200a31ae2..f064d80e3f 100644
 --- a/main/nucleus/admin/rest/rest-service/src/main/java/org/glassfish/admin/rest/adapter/JerseyContainerCommandService.java
 +++ b/main/nucleus/admin/rest/rest-service/src/main/java/org/glassfish/admin/rest/adapter/JerseyContainerCommandService.java
-@@ -69,8 +69,8 @@ import org.glassfish.hk2.utilities.Binder;
+@@ -70,8 +70,8 @@ import org.glassfish.hk2.utilities.Binder;
  import org.glassfish.hk2.utilities.binding.AbstractBinder;
  import org.glassfish.internal.api.InternalSystemAdministrator;
  import org.glassfish.internal.api.ServerContext;
@@ -70,7 +59,7 @@ index cc31ae4ca1..c46fa0faa4 100644
  import org.glassfish.jersey.internal.util.collection.Ref;
  import org.glassfish.jersey.process.internal.RequestScoped;
  import org.glassfish.jersey.server.ContainerFactory;
-@@ -184,7 +184,7 @@ public class JerseyContainerCommandService implements PostConstruct {
+@@ -185,7 +185,7 @@ public class JerseyContainerCommandService implements PostConstruct {
              protected void configure() {
                  bindFactory(RestAdapter.SubjectReferenceFactory.class).to(new TypeLiteral<Ref<Subject>>() {
                  }).in(PerLookup.class);
@@ -80,7 +69,7 @@ index cc31ae4ca1..c46fa0faa4 100644
              }
          });
 diff --git a/main/nucleus/admin/rest/rest-service/src/main/java/org/glassfish/admin/rest/adapter/RestAdapter.java b/main/nucleus/admin/rest/rest-service/src/main/java/org/glassfish/admin/rest/adapter/RestAdapter.java
-index 1553e8e08d..1f43e2d58c 100644
+index c1471d4a1c..dcd1f482f1 100644
 --- a/main/nucleus/admin/rest/rest-service/src/main/java/org/glassfish/admin/rest/adapter/RestAdapter.java
 +++ b/main/nucleus/admin/rest/rest-service/src/main/java/org/glassfish/admin/rest/adapter/RestAdapter.java
 @@ -82,7 +82,7 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
@@ -102,7 +91,7 @@ index 1553e8e08d..1f43e2d58c 100644
              }
          });
 diff --git a/main/nucleus/packager/nucleus-jersey/pom.xml b/main/nucleus/packager/nucleus-jersey/pom.xml
-index 37a300f25d..7ea0f31019 100644
+index 307f2dd5b9..6295c31146 100644
 --- a/main/nucleus/packager/nucleus-jersey/pom.xml
 +++ b/main/nucleus/packager/nucleus-jersey/pom.xml
 @@ -63,10 +63,6 @@
@@ -116,8 +105,19 @@ index 37a300f25d..7ea0f31019 100644
              <groupId>org.glassfish.jersey.containers</groupId>
              <artifactId>jersey-container-grizzly2-http</artifactId>
          </dependency>
+@@ -102,6 +98,10 @@
+             <groupId>org.glassfish.jersey.core</groupId>
+             <artifactId>jersey-common</artifactId>
+         </dependency>
++        <dependency>
++            <groupId>org.glassfish.jersey.inject</groupId>
++            <artifactId>jersey-hk2</artifactId>
++        </dependency>
+        <dependency>
+             <groupId>javax.ws.rs</groupId>
+             <artifactId>javax.ws.rs-api</artifactId>
 diff --git a/main/nucleus/pom.xml b/main/nucleus/pom.xml
-index fce64b9f74..6ceb509904 100644
+index 6cd291e66d..dcdbb2e58d 100644
 --- a/main/nucleus/pom.xml
 +++ b/main/nucleus/pom.xml
 @@ -148,7 +148,7 @@
@@ -143,3 +143,19 @@ index fce64b9f74..6ceb509904 100644
          <mimepull.version>1.9.4</mimepull.version>
          <jbi.version>1.0</jbi.version>
          <glassfish-management-api.version>3.2.1-b002</glassfish-management-api.version>
+diff --git a/main/nucleus/tests/admin/pom.xml b/main/nucleus/tests/admin/pom.xml
+index 6c029a7909..2cb7816208 100644
+--- a/main/nucleus/tests/admin/pom.xml
++++ b/main/nucleus/tests/admin/pom.xml
+@@ -161,6 +161,11 @@ of COPY_LIB map constant.)
+             <scope>test</scope>
+         </dependency>
+         <dependency>
++            <groupId>org.glassfish.jersey.inject</groupId>
++            <artifactId>jersey-hk2</artifactId>
++            <scope>test</scope>
++        </dependency>
++        <dependency>
+             <groupId>org.glassfish.main.admin</groupId>
+             <artifactId>rest-client</artifactId>
+             <version>${project.version}</version>
