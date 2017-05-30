@@ -1,3 +1,16 @@
+diff --git a/main/appserver/pom.xml b/main/appserver/pom.xml
+index ff22ff2a90..5953054ae7 100644
+--- a/main/appserver/pom.xml
++++ b/main/appserver/pom.xml
+@@ -123,7 +123,7 @@
+         <tyrus.version>1.13.1</tyrus.version>
+         <jsonp-api.version>1.1</jsonp-api.version>
+         <jsonp-ri.version>1.1</jsonp-ri.version>
+-        <jsonp-jaxrs.version>1.1</jsonp-jaxrs.version>
++        <jsonp-jaxrs.version>1.1.1</jsonp-jaxrs.version>
+         <concurrent-api.version>1.0</concurrent-api.version>
+         <concurrent.version>1.0</concurrent.version>
+         <javax.batch-api.version>1.0</javax.batch-api.version>
 diff --git a/main/nucleus/pom.xml b/main/nucleus/pom.xml
 index da9351ae3d..c1e75d7407 100644
 --- a/main/nucleus/pom.xml
