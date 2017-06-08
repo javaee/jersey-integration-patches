@@ -1,5 +1,20 @@
+diff --git a/main/appserver/packager/jersey/pom.xml b/main/appserver/packager/jersey/pom.xml
+index 273ee31ba4..6caf05fcb0 100644
+--- a/main/appserver/packager/jersey/pom.xml
++++ b/main/appserver/packager/jersey/pom.xml
+@@ -128,6 +128,10 @@
+             <artifactId>jersey-media-json-processing</artifactId>
+         </dependency>
+         <dependency>
++            <groupId>org.glassfish.jersey.media</groupId>
++            <artifactId>jersey-media-json-binding</artifactId>
++        </dependency>
++        <dependency>
+             <groupId>org.glassfish.jersey.ext</groupId>
+             <artifactId>jersey-mvc</artifactId>
+         </dependency>
 diff --git a/main/appserver/pom.xml b/main/appserver/pom.xml
-index ff22ff2a90..5953054ae7 100644
+index b3ded982be..e30500037e 100644
 --- a/main/appserver/pom.xml
 +++ b/main/appserver/pom.xml
 @@ -123,7 +123,7 @@
@@ -8,11 +23,30 @@ index ff22ff2a90..5953054ae7 100644
          <jsonp-ri.version>1.1</jsonp-ri.version>
 -        <jsonp-jaxrs.version>1.1</jsonp-jaxrs.version>
 +        <jsonp-jaxrs.version>1.1.1</jsonp-jaxrs.version>
+         <json.bind-api.version>1.0.0-RC2</json.bind-api.version>
+         <yasson.version>1.0.0-RC1</yasson.version>
          <concurrent-api.version>1.0</concurrent-api.version>
-         <concurrent.version>1.0</concurrent.version>
-         <javax.batch-api.version>1.0</javax.batch-api.version>
+diff --git a/main/nucleus/packager/nucleus-jersey/pom.xml b/main/nucleus/packager/nucleus-jersey/pom.xml
+index 6295c31146..61a342c156 100644
+--- a/main/nucleus/packager/nucleus-jersey/pom.xml
++++ b/main/nucleus/packager/nucleus-jersey/pom.xml
+@@ -84,6 +84,14 @@
+         </dependency>
+         <dependency>
+             <groupId>org.glassfish.jersey.media</groupId>
++            <artifactId>jersey-media-json-processing</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.glassfish.jersey.media</groupId>
++            <artifactId>jersey-media-json-binding</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.glassfish.jersey.media</groupId>
+             <artifactId>jersey-media-multipart</artifactId>
+         </dependency>
+         <dependency>
 diff --git a/main/nucleus/pom.xml b/main/nucleus/pom.xml
-index 7a996e63aa..5fa26756b4 100644
+index 59af59018e..4c3fe8bf52 100644
 --- a/main/nucleus/pom.xml
 +++ b/main/nucleus/pom.xml
 @@ -143,11 +143,11 @@
