@@ -1,7 +1,7 @@
-diff --git a/main/nucleus/pom.xml b/main/nucleus/pom.xml
-index 2186a08153..4c3fe8bf52 100644
---- a/main/nucleus/pom.xml
-+++ b/main/nucleus/pom.xml
+diff --git a/nucleus/pom.xml b/nucleus/pom.xml
+index d94e30c610..97502e5343 100644
+--- a/nucleus/pom.xml
++++ b/nucleus/pom.xml
 @@ -143,7 +143,7 @@
          <gmbal.version>4.0.0-b001</gmbal.version>
          <woodstox.version>4.1.2</woodstox.version>
