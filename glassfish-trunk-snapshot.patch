@@ -1,13 +1,13 @@
 diff --git a/nucleus/parent/pom.xml b/nucleus/parent/pom.xml
-index 798833a1..2cb3ba35 100644
+index c66bf356..09adf2e3 100644
 --- a/nucleus/parent/pom.xml
 +++ b/nucleus/parent/pom.xml
-@@ -147,7 +147,7 @@
-         <gmbal.version>4.0.0-b001</gmbal.version>
+@@ -148,7 +148,7 @@
          <antlr.version>2.7.7</antlr.version>
          <ant.version>1.10.1</ant.version>
+         <ldapbp.version>1.0</ldapbp.version>
 -        <jersey.version>2.26</jersey.version>
 +        <jersey.version>2.27-SNAPSHOT</jersey.version>
-         <jackson.version>2.8.9</jackson.version>
+         <jackson.version>2.8.10</jackson.version>
          <jettison.version>1.3.7</jettison.version>
-         <jax-rs-api.spec.version>2.1</jax-rs-api.spec.version> 
+         <jax-rs-api.spec.version>2.1</jax-rs-api.spec.version>
